@@ -250,7 +250,14 @@ window.TinyStory =
 		}
             
         if (deadend)
-            this.delayedLoadNode(obj.parent.parent.type == "Condition" ? obj.parent.parent.parent.children : obj.parent.parent.children, true, true);
+            this.delayedLoadNode(
+                (obj.parent.parent ?
+                    (obj.parent.parent.type == "Condition" ?
+                        (obj.parent.parent.parent ?
+                            obj.parent.parent.parent.children :
+                            this.data)
+                        : obj.parent.parent.children)
+                    : this.data), true, true);
         
         $("#wrapper").animate({ opacity: 1 }, this.fadeSpeed);
 	},
