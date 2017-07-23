@@ -1,0 +1,63 @@
+html {
+    background: #012;
+    background: -moz-linear-gradient(top, #012 0%, #000 100%);
+    background: -webkit-linear-gradient(top, #012 0%, #000 100%);
+    background: linear-gradient(to bottom, #012 0%,#000 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#001122', endColorstr='#000000',GradientType=0 );
+    color: #fff;
+    font-family: sans-serif;
+    font-size: 16pt;
+    height: 100%;
+    width: 100%;
+}
+
+#credit {
+    color: #445;
+    font-size: 9pt;
+    position: absolute;
+    margin-top: -30px;
+    margin-left: -100px;
+    left: 50%;
+    text-align: center;
+    top: 100%;
+    width: 200px;
+}
+
+#credit a {
+    color: #568;
+}
+
+#error {
+    color: #f30;
+    text-align: center;
+}
+
+#title {
+    border-bottom: 1px solid white; 
+    font-size: 150%;
+    margin: 15px auto 25px auto;
+    padding-bottom: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 600px;
+}
+
+#wrapper {
+    margin: 25px auto;
+    width: 600px;
+}
+
+.option {
+    color: #39c;
+    cursor: pointer;
+    #font-weight: bold;
+    margin: 10px 0;
+}
+
+.option:hover {
+    color: #9df;
+}
+
+.text {
+    margin: 25px 0;
+}
