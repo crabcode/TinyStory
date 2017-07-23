@@ -1,5 +1,4 @@
-TinyScript
-----------
+# TinyScript
 
 TinyScript is small indentation-based Choose Your Own Adventure engine I wrote because why not.
 
@@ -8,20 +7,20 @@ Syntax
 
 The most important thing to note is that the nesting of text and options is achieved with indentation. For that, you must either use tabs or 4 spaces, but mustn't mix the two.
 
-Otherwise, the easiest way to see how it works would be to check out the sample.txt, but here's a list of commands you can currently use:
-
-#### Options
+### Options
 ```
 * I am a clickable option
     And this is the text that will be displayed if you click it
 ```
 
-#### Variables
+Note: If there are no subsequent options or jumps, the previous options will be displayed again.
+
+### Setting Variables
 ```
 = variable value
 ```
 
-#### Conditions
+### Conditions
 ```
 : variable true
     * I appear only if the variable is true
@@ -29,7 +28,7 @@ Otherwise, the easiest way to see how it works would be to check out the sample.
     * And I appear if it is false
 ```
 
-#### Jumps
+### Jumps
 Jumps simply use the text of the option you want to jump to. Obviously that's not a great idea because it will get confused if multiple options in your game have the same text. I'll probably change that to a proper labeling system at some point.
 
 ```
@@ -39,9 +38,9 @@ Jumps simply use the text of the option you want to jump to. Obviously that's no
     > Option text
 ```
 
-Note: Putting `> End` will end the game there.
+Note: Putting `> End` will stop the game.
 
-#### Links
+### Links
 Links work pretty much the same away, except they don't erase the displayed text, so you can merge texts.
 
 ```
@@ -59,20 +58,20 @@ Output:
 Customization
 -------------
 
-#### Filename
+### Filename
 If you would like to change the name of the story file, tell TinyScript what it is in the index.html by setting
 ```
 TinyScript.filename = "yourname.txt"
 ```
 prior to load().
 
-#### Title
+### Title
 This will change the HTML title and add the title to the top of page as well:
 ```
 # title A Cool Title
 ```
 
-#### Font
+### Font
 You can easily add a Google Font by adding:
 ```
 # font Google Font Name
