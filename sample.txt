@@ -144,9 +144,7 @@
                                     
                                     * So now what do I do?
                                         > So now what?
-                * back
+                * Can I do something else?
                     > What do I do?
-            * back
+            * Can I take a step back?
                 > What do I see?
-        * back
-            > Where am I?
