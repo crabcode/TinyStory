@@ -1,6 +1,6 @@
-# TinyScript
+# TinyStory
 
-TinyScript is small indentation-based Choose Your Own Adventure engine I wrote because why not.
+TinyStory is small indentation-based Choose Your Own Adventure engine I wrote because why not.
 
 Syntax
 ------
@@ -59,9 +59,9 @@ Customization
 -------------
 
 ### Filename
-If you would like to change the name of the story file, tell TinyScript what it is in the index.html by setting
+If you would like to change the name of the story file, tell TinyStory what it is in the index.html by setting
 ```
-TinyScript.filename = "yourname.txt"
+TinyStory.filename = "yourname.txt"
 ```
 prior to load().
 
