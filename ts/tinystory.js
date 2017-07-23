@@ -2,6 +2,7 @@ window.TinyStory =
 {
 	filename: "story.txt",
     fadeSpeed: 200,
+    restartPause: 200,
 	data: [],
 	index: [],
 	vars: {},
@@ -85,8 +86,6 @@ window.TinyStory =
 					var cmd = line.substr(1).trim();
 					var value = cmd.substr(cmd.indexOf(" ")+1).trim();
                     
-                    console.log(value);
-                    
 					switch (cmd.substr(0, cmd.indexOf(" ")))
 					{
 						case "title":
@@ -103,7 +102,14 @@ window.TinyStory =
                             $("html").css("font-family", "'" + value + "', sans-serif")
                             break;
 						
-						default:
+                        case "audio":
+                            var loadHandler = function loadHandler(event) {
+                                var instance = createjs.Sound.play("bgm", { loop: -1 });
+                            }
+
+                            createjs.Sound.alternateExtensions = [ "mp3" ];
+                            createjs.Sound.on("fileload", loadHandler, this);
+                            createjs.Sound.registerSound(value, "bgm");
 							break;
 					}
 					
@@ -138,10 +144,9 @@ window.TinyStory =
 	{
 		$("#error").remove();
 		
-		var wrapper = $(document.createElement("div"))
-                        .attr("id", "wrapper")
-                        .css("opacity", 0);
-		$("body").append(wrapper);
+		$("#wrapper").css("opacity", 0);
+        $("#wrapper").empty();
+        this.vars = {};
 		
 		this.loadNode(this.data);
 	},
@@ -219,6 +224,7 @@ window.TinyStory =
                     
 					if (obj.content.toLowerCase() == "end")
                     {
+                        this.displayRestart();
 						break;
                     }
 					else if (this.index[obj.content] == undefined)
@@ -231,7 +237,10 @@ window.TinyStory =
                     deadend = false;
                     
 					if (obj.content.toLowerCase() == "end")
+                    {
+                        this.displayRestart();
 						break;
+                    }
 					else if (this.index[obj.content] == undefined)
 						console.error("Index '" + obj.content + "' not found");
 					else
@@ -254,5 +263,23 @@ window.TinyStory =
             }.bind(this));
         else
             this.loadNode(data, keep, optionsOnly);
+    },
+    
+    displayRestart: function displayRestart()
+    {
+        $("#wrapper").append($(document.createElement("div"))
+										.addClass("option restart")
+									    .text("Restart")
+									    .click(this.restart.bind(this)));
+    },
+    
+    restart: function restart()
+    {
+        if ($("#wrapper").css("opacity") > 0)
+            $("#wrapper").animate({ opacity: 0 }, this.fadeSpeed, function() {
+                setTimeout(this.run.bind(this), this.restartPause);
+            }.bind(this));
+        else
+            this.run();
     }
 }

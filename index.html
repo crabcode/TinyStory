@@ -3,14 +3,16 @@
 	<head>
 		<title>TinyStory</title>
 		<meta charset="utf-8"/>
-		<link href="system/style.css" rel="stylesheet"/> 
+		<link href="ts/style.css" rel="stylesheet"/> 
 	</head>
 	
 	<body>
+        <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
+        <script type="text/javascript">window.createjs || document.write("<script type=\"text\/javascript\" src=\"ts\/soundjs-0.6.2.min.js\"><\/script>");</script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script type="text/javascript">window.jQuery || document.write("<script type=\"text\/javascript\" src=\"system\/jquery.min.js\"><\/script>");</script>
+        <script type="text/javascript">window.jQuery || document.write("<script type=\"text\/javascript\" src=\"ts\/jquery.min.js\"><\/script>");</script>
 		
-		<script defer src="system/tinystory.js" type="text/javascript"></script>
+		<script defer src="ts/tinystory.js" type="text/javascript"></script>
 		
 		<script type="text/javascript">
 			window.onload = function()
@@ -20,8 +22,10 @@
 			}
 		</script>
 		
-		<p id="error"></p>
-        
+		<div id="wrapper">
+			<p id="error"></p>
+		</div>
+		
         <p id="credit">Powered by <a href="https://github.com/crabcode/TinyStory" target="_blank">TinyStory</a></p>
 	</body>
 </html>

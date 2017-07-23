@@ -58,13 +58,6 @@ Output:
 Customization
 -------------
 
-### Filename
-If you would like to change the name of the story file, tell TinyStory what it is in the index.html by setting
-```
-TinyStory.filename = "yourname.txt"
-```
-prior to load().
-
 ### Title
 This will change the HTML title and add the title to the top of page as well:
 ```
@@ -76,6 +69,36 @@ You can easily add a Google Font by adding:
 ```
 # font Google Font Name
 ```
+
+### Audio
+You can play an audiofile by adding:
+```
+# audio path/to/file.ogg
+```
+
+The file should be provided in both OGG and MP3 format. You must link to the OGG file though. It will loop automatically.
+
+### Filename
+If you would like to change the name of the story file, tell TinyStory what it is in the index.html by setting
+```
+TinyStory.filename = "yourname.txt";
+```
+prior to load().
+
+### Fade Speed
+Change the fade speed by setting
+```
+TinyStory.fadeSpeed = 500;
+```
+in the index.html (value in ms).
+
+### Restart Pause
+Change the timeout duration during a restart by setting
+```
+TinyStory.restartPause = 500;
+```
+in the index.html (value in ms).
+
 
 Example
 -------
