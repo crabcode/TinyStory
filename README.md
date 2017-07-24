@@ -21,21 +21,34 @@ Note: If there are no subsequent options or jumps, the previous options will be 
 ```
 
 ### Conditions
+Check if a variable has a certain value. Not putting a value will default to `undefined`. Conditions can be nested.
+
 ```
 : variable true
     * I appear only if the variable is true
-: variable false
-    * And I appear if it is false
+: variable
+    * I appear if the variable hasn't been set or is undefined
+: v1 true
+	: v2 true
+		I appear if both v1 and v2 are true.
+```
+
+### Labels
+Mark parts to jump or link to. Following blocks are nested through indentation as well.
+
+```
+[Label]
+    * I'm part of the label's block!
 ```
 
 ### Jumps
-Jumps simply use the text of the option you want to jump to. Obviously that's not a great idea because it will get confused if multiple options in your game have the same text. I'll probably change that to a proper labeling system at some point.
 
 ```
 * Option text
-    We're going to jump here in a second
+    [Label]
+        We're going to jump here in a second
 * Here we go
-    > Option text
+    > Label
 ```
 
 Note: Putting `> End` will stop the game.
@@ -44,11 +57,12 @@ Note: Putting `> End` will stop the game.
 Links work pretty much the same away, except they don't erase the displayed text, so you can merge texts.
 
 ```
-* I am an option!
-    Things are happening here!
-* And now for a jump...
+* Some option
+    [Label]
+        Things are happening here!
+* And now for a link...
     As we can see:
-    < I am an option!
+    < Label
 ```
 
 Output:

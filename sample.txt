@@ -9,142 +9,148 @@
     * What do I feel?
         A slight sense of dread.
     * What do I see?
-        There's a ghost in your room.
+        [WhatIsee]
+            There's a ghost in your room.
 
-        * How long has it been there?
-            For three days.
-        * How do I feel about that?
-            Not great.
-        * What is it doing?
-            It just stands there in the corner, watching you.
-        * What do I do?
-            What do you want to do?
-            
-            * Can I talk to it?
-                Sure. What do you want to say?
-                
-                * "What do you want?"
-                    It doesn't answer.
-                * "Go away!"
-                    It doesn't move.
-                * "Who are you?"
-                    It doesn't say.
-                * Can I try something else?
-                    > What do I do?
-            * Can I ignore it?
-                Of course. Do you want to?
-                
-                * Yes
-                    The ghost keeps watching you, and you keep ignoring it. You continue this game until the end of days.
-                    < End
-                * No
-                    > What do I do?
-            * Can I call someone?
-                Who you gonna call?
-                
-                * Can I call the Ghostbusters?
-                    They're not real.
-                * Can I call my mom?
-                    Your mom is dead.
+            * How long has it been there?
+                For three days.
+            * How do I feel about that?
+                Not great.
+            * What is it doing?
+                It just stands there in the corner, watching you.
+            * What do I do?
+                [WhatIdo]
+                    What do you want to do?
                     
-                    * Is that who the ghost is?
-                        I don't know. Does it look like your mom?
+                    * Can I talk to it?
+                        Sure. What do you want to say?
                         
-                        * Yes, actually.
-                            Then that's who that ghost is.
+                        * "What do you want?"
+                            It doesn't answer.
+                        * "Go away!"
+                            It doesn't move.
+                        * "Who are you?"
+                            It doesn't say.
+                        * Can I try something else?
+                            > WhatIdo
+                    * Can I ignore it?
+                        Of course. Do you want to?
+                        
+                        * Yes
+                            The ghost keeps watching you, and you keep ignoring it. You continue this game until the end of days.
+                            < End
+                        * No
+                            > WhatIdo
+                    * Can I call someone?
+                        [CanIcall]
+                            Who you gonna call?
                             
-                            * So now what?
-                                Well, you need to figure out what she wants.
+                            * Can I call the Ghostbusters?
+                                They're not real.
+                            * Can I call my mom?
+                                Your mom is dead.
                                 
-                                * How do I do that?
-                                    Think. Why might she be here with you?
+                                * Is that who the ghost is?
+                                    I don't know. Does it look like your mom?
                                     
-                                    * Because she loved me?
-                                        Of course she did. That goes without saying.
-                                    * Because something is wrong?
-                                        No reaction. I don't think that's it.
-                                    * Because it's my fault she died?
-                                        Her expression changed. I think you're getting close.
+                                    * Yes, actually.
+                                        Then that's who that ghost is.
                                         
-                                        * Is she angry?
-                                            No, she's not.
-                                        * Is she sad?
-                                            Yes, she looks sad.
-                                            
-                                            * Because she died?
-                                                No, she seems at peace with that.
-                                            * Because I did this to her?
-                                                She shakes her head.
-                                            * Because I blame myself?
-                                                That's it. She seems heartbroken to hear you say that.
+                                        * So now what?
+                                            [NowWhat]
+                                                Well, you need to figure out what she wants.
                                                 
-                                                * But it was my fault...
-                                                    No, it wasn't. You did nothing wrong.
+                                                * How do I do that?
+                                                    Think. Why might she be here with you?
                                                     
-                                                    * But if I hadn't...
-                                                        Stop. It's not your fault. It's no one's fault. Sometimes these things just happen. Making yourself miserable over something you had no control over won't bring her back.
+                                                    * Because she loved me?
+                                                        Of course she did. That goes without saying.
+                                                    * Because something is wrong?
+                                                        No reaction. I don't think that's it.
+                                                    * Because it's my fault she died?
+                                                        Her expression changed. I think you're getting close.
                                                         
-                                                        * Fine. So what do I do now?
-                                                            You need to forgive yourself.
+                                                        * Is she angry?
+                                                            No, she's not.
+                                                        * Is she sad?
+                                                            Yes, she looks sad.
                                                             
-                                                            * I will.
-                                                                The ghost disappears. You did it! Now go on, live your life and be happy. It's what she wanted. Good luck.
-                                                                < End
-                                                            * I can't.
-                                                                Blaming yourself won't do any good.
-                                                                < Fine. So what do I do now?
-                                                        * But...
-                                                            > But if I hadn't...
-                                        * Is she disappointed?
-                                            Never.
-                                        * Is she scared?
-                                            I don't think so, no.
-                                
-                        * Not really.
-                            Then no.
-                            = mom false
-                            
-                            * So what do I do?
-                                > What do I do?
-                                
-                    * Can I call someone else?
-                        > Can I call someone?
-                        
-                * Can I call an exterminator?
-                    Yes. The exterminator makes an appointment with you for the next day.
-                    
-                    * Is it the next day yet?
-                        Yes. It's the next day and the exterminator comes by.
-                        
-                        * Does she see the ghost?
-                            No. But that just means that it haunts you personally and not your home, so it's normal.
-                        * What does she do?
-                            Asking you questions. Exterminating a ghost isn't as simple as vacuuming it up. You need to find out who it is and what they want.
-                            
-                            * What does she need to know?
-                                First of all, does the ghost look familiar?
-                                
-                                * Is it my dad?
-                                    Your dad is still alive. You'd know that if you called every once in a while.
-                                : mom undefined
-                                    * Is it my mom?
-                                        I think so, yes.
-                                        = mom true
-
-                                        * So now what do I do?
-                                            > So now what?
-                                : mom false
-                                    * Is it my mom?
-                                        You already said it wasn't, so no.
-                                * Is it my brother?
-                                    You don't have a brother.
-                                * Is it my sister?
-                                    I think so, yes.
-                                    = mom false
+                                                            * Because she died?
+                                                                No, she seems at peace with that.
+                                                            * Because I did this to her?
+                                                                She shakes her head.
+                                                            * Because I blame myself?
+                                                                That's it. She seems heartbroken to hear you say that.
+                                                                
+                                                                * But it was my fault...
+                                                                    No, it wasn't. You did nothing wrong.
+                                                                    
+                                                                    * But if I hadn't...
+                                                                        [ButIf]
+                                                                            Stop. It's not your fault. It's no one's fault. Sometimes these things just happen. Making yourself miserable over something you had no control over won't bring her back.
+                                                                            
+                                                                            * Fine. So what do I do now?
+                                                                                [Forgive]
+                                                                                    You need to forgive yourself.
+                                                                                    
+                                                                                    * I will.
+                                                                                        The ghost disappears. You did it! Now go on, live your life and be happy. It's what she wanted. Good luck.
+                                                                                        < End
+                                                                                    * I can't.
+                                                                                        Blaming yourself won't do any good.
+                                                                                        < Forgive
+                                                                            * But...
+                                                                                > ButIf
+                                                        * Is she disappointed?
+                                                            Never.
+                                                        * Is she scared?
+                                                            I don't think so, no.
+                                                
+                                    * Not really.
+                                        Then no.
+                                        = mom false
+                                        
+                                        * So what do I do?
+                                            > WhatIdo
+                                            
+                                * Can I call someone else?
+                                    > CanIcall
                                     
-                                    * So now what do I do?
-                                        > So now what?
-                * Can I do something else?
-                    > What do I do?
-            * Can I take a step back?
-                > What do I see?
+                            * Can I call an exterminator?
+                                Yes. The exterminator makes an appointment with you for the next day.
+                                
+                                * Is it the next day yet?
+                                    Yes. It's the next day and the exterminator comes by.
+                                    
+                                    * Does she see the ghost?
+                                        No. But that just means that it haunts you personally and not your home, so it's normal.
+                                    * What does she do?
+                                        Asking you questions. Exterminating a ghost isn't as simple as vacuuming it up. You need to find out who it is and what they want.
+                                        
+                                        * What does she need to know?
+                                            First of all, does the ghost look familiar?
+                                            
+                                            * Is it my dad?
+                                                Your dad is still alive. You'd know that if you called every once in a while.
+                                            : mom undefined
+                                                * Is it my mom?
+                                                    I think so, yes.
+                                                    = mom true
+
+                                                    * So now what do I do?
+                                                        > NowWhat
+                                            : mom false
+                                                * Is it my mom?
+                                                    You already said it wasn't, so no.
+                                            * Is it my brother?
+                                                You don't have a brother.
+                                            * Is it my sister?
+                                                I think so, yes.
+                                                = mom false
+                                                
+                                                * So now what do I do?
+                                                    > NowWhat
+                            * Can I do something else?
+                                > WhatIdo
+                    * Can I take a step back?
+                        > WhatIsee
