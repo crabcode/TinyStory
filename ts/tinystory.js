@@ -83,7 +83,7 @@ window.TinyStory =
                     
                 case "[":
                     if (line[line.length-1] != "]")
-                        throw new Error("Expected ']' at end of line at " + (i+1));
+                        throw new Error("Expected ']' at end of line at line " + (i+1));
                     
                     obj.content = line.substr(1, line.length-2).trim();
                     obj.type = "Label";
@@ -212,22 +212,37 @@ window.TinyStory =
                     }
                     
                     if (this.vars[variable] == value)
-                        this.delayedLoadNode(obj.children, true, false);
+                    {
+                        if (obj.children.length > 0)
+                            this.delayedLoadNode(obj.children, true, false);
+                        else
+                            throw new Error("Empty condition at line " + (i+1));
+                    }
                     break;
                     
                 case "Operation":
-                    var variable = obj.content.substr(0, obj.content.indexOf(" "));
-                    var value = obj.content.substr(obj.content.indexOf(" ")+1);
+                    var variable, value;
                     
-                    switch (value)
+                    if (obj.content.indexOf(" ") > -1)
                     {
-                        case "undefined":
-                            value = undefined;
-                            break;
-                        case "null":
-                            value = null;
-                        case "NaN":
-                            value = NaN;
+                        var variable = obj.content.substr(0, obj.content.indexOf(" "));
+                        var value = obj.content.substr(obj.content.indexOf(" ")+1);
+
+                        switch (value)
+                        {
+                            case "undefined":
+                                value = undefined;
+                                break;
+                            case "null":
+                                value = null;
+                            case "NaN":
+                                value = NaN;
+                        }
+                    }
+                    else
+                    {
+                        variable = obj.content;
+                        value = undefined;
                     }
                     
                     this.vars[variable] = value;
@@ -258,7 +273,10 @@ window.TinyStory =
                     break;
                 
                 case "Label":
-                    this.delayedLoadNode(obj.children, true, optionsOnly);
+                    if (obj.children.length > 0)
+                        this.delayedLoadNode(obj.children, true, optionsOnly);
+                    else
+                        console.warn("Empty label at line " + (i+1));
                     break;
             }
         }
