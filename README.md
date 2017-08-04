@@ -69,6 +69,33 @@ Output:
 >As we can see:
 >Things are happening here!
 
+### Functions
+You can define and call functions by first adding functions to the TinyStory.functions object in the index.html:
+
+```
+<script type="text/javascript">
+	window.onload = function()
+	{
+		TinyStory.functions.load = function() { TinyStory.loadGame(); }
+		TinyStory.functions.save = function() { TinyStory.saveGame(); }
+		TinyStory.load();
+	}
+</script>
+```
+
+And then executing them from within the story:
+
+```
+* Load
+	! load
+* Save
+	! save
+```
+
+Output:
+>As we can see:
+>Things are happening here!
+
 Customization
 -------------
 
@@ -99,6 +126,17 @@ TinyStory.filename = "yourname.txt";
 ```
 prior to load().
 
+### Functions
+You can register functions to call from the story (see Syntax > Functions) by adding them to the TinyStory.functions object in the index.html:
+```
+TinyStory.functions.yourFunctionName = function() {
+	// Your function
+};
+TinyStory.functions.anotherFunctionName = function() {
+	// Another function
+};
+```
+
 ### Fade Speed
 Change the fade speed by setting
 ```
@@ -113,6 +151,35 @@ TinyStory.restartPause = 500;
 ```
 in the index.html (value in ms).
 
+### Autosave
+You can enable autosave by setting
+```
+TinyStory.autosave = true;
+```
+in the index.html (value in ms). It will save whenever a new branch is loaded.
+
+### Autoload
+You can enable autoload by setting
+```
+TinyStory.autoload = true;
+```
+
+### Auto-Return
+Auto-return is the automatic loading of the last node when no further actions or links are present within a node. You can disable this by setting
+```
+TinyStory.autoReturn = false;
+```
+
+Custom Save/Load/Restart
+------------------------
+
+If you want to create custom save, load, and restart functions, you can use:
+
+```
+TinyStory.saveGame();
+TinyStory.loadGame();
+TinyStory.restart();
+```
 
 Example
 -------

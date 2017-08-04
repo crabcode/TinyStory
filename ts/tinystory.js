@@ -1,8 +1,14 @@
 window.TinyStory =
 {
+    autosave: false,
+    autoload: false,
+    autoReturn: true,
     filename: "story.txt",
+    functions: {},
     fadeSpeed: 200,
     restartPause: 200,
+    
+    currentNode: {},
     data: [],
     index: [],
     vars: {},
@@ -40,6 +46,7 @@ window.TinyStory =
             if (line.length == 0)
                 continue;
             
+            obj.id = i;
             obj.indent = this.raw[i].search(/\S/);
             
             if (this.space === undefined && obj.indent > 0)
@@ -79,6 +86,11 @@ window.TinyStory =
                 case "<":
                     obj.content = line.substr(1).trim();
                     obj.type = "Link";
+                    break;
+                    
+                case "!":
+                    obj.content = line.substr(1).trim();
+                    obj.type = "Function";
                     break;
                     
                 case "[":
@@ -156,7 +168,9 @@ window.TinyStory =
         $("#wrapper").empty();
         this.vars = {};
         
-        this.loadNode(this.data);
+        if (this.autoload && this.loadGame()) {}
+        else
+            this.loadNode(this.data);
     },
     
     loadNode: function loadNode(data, keep, optionsOnly)
@@ -174,7 +188,7 @@ window.TinyStory =
                     $("#wrapper").append($(document.createElement("div"))
                                         .addClass("option")
                                         .text(obj.content)
-                                        .click(this.delayedLoadNode.bind(this, obj.children, false, false)));
+                                        .click(this.handleClick.bind(this, obj, false, false)));
                     break;
                     
                 case "Text":
@@ -251,17 +265,28 @@ window.TinyStory =
                 case "Jump":
                     if (obj.content.toLowerCase() == "end")
                     {
+                        return;
+                    }
+                    else if (obj.content.toLowerCase() == "restart")
+                    {
                         this.displayRestart();
                         break;
                     }
                     else if (this.index[obj.content] == undefined)
                         console.error("Index '" + obj.content + "' not found");
                     else
+                    {
+                        this.currentNode = this.index[obj.content].children;
                         this.delayedLoadNode(this.index[obj.content].children, false, false);
+                    }
                     break;
                     
                 case "Link":
                     if (obj.content.toLowerCase() == "end")
+                    {
+                        return;
+                    }
+                    else if (obj.content.toLowerCase() == "restart")
                     {
                         this.displayRestart();
                         break;
@@ -270,6 +295,19 @@ window.TinyStory =
                         console.error("Index '" + obj.content + "' not found");
                     else
                         this.delayedLoadNode(this.index[obj.content].children, true, false);
+                    break;
+                    
+                case "Function":
+                    if (obj.content.length > 0)
+                    {
+                        if (typeof this.functions[obj.content] == "function")
+                            this.functions[obj.content].call();
+                        else
+                            console.error("Function '" + obj.content + "' not defined at line " + (i+1));
+                            
+                    }
+                    else
+                        console.warn("Empty function at line " + (i+1));
                     break;
                 
                 case "Label":
@@ -280,8 +318,8 @@ window.TinyStory =
                     break;
             }
         }
-            
-        if ($(".option").length == 0)
+        
+        if ($(".option").length == 0 && this.autoReturn)
             this.moveUp(obj);
         
         $("#wrapper").animate({ opacity: 1 }, this.fadeSpeed);
@@ -295,6 +333,16 @@ window.TinyStory =
             }.bind(this));
         else
             this.loadNode(data, keep, optionsOnly);
+    },
+    
+    handleClick: function handleClick(data, keep, optionsOnly)
+    {
+        if (this.autoSave)
+            this.saveGame();
+        
+        this.currentNode = data;
+        
+        this.delayedLoadNode(data.children, keep, optionsOnly);
     },
     
     displayRestart: function displayRestart()
@@ -337,5 +385,52 @@ window.TinyStory =
             }.bind(this));
         else
             this.run();
+    },
+    
+    saveGame: function saveGame()
+    {
+        window.localStorage.setItem("ts-savedata", JSON.stringify({
+            vars: this.vars,
+            id: this.currentNode.id
+        }));
+    },
+    
+    loadGame: function loadGame()
+    {
+        var sd;
+        
+        if (window.localStorage.getItem("ts-savedata") && (sd = JSON.parse(window.localStorage.getItem("ts-savedata"))))
+        {
+            if (!sd.vars || !sd.id)
+                return false;
+            
+            this.vars = sd.vars;
+            var obj = this.findObjById({ id: -1, children: this.data }, sd.id);
+            
+            if (!obj)
+                return false;
+            else 
+            {
+                this.loadNode(obj.children);
+                return true;
+            }
+        }
+        else
+            return false;
+    },
+    
+    findObjById: function findObjById(obj, id)
+    {
+        if (obj.id == id)
+            return obj;
+        else if (obj.children)
+        {
+            var result = null;
+            for (var i = 0; result == null && i < obj.children.length; i++)
+                result = this.findObjById(obj.children[i], id);
+            return result;
+        }
+        
+        return null;
     }
 }
