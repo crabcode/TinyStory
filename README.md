@@ -88,13 +88,10 @@ And then executing them from within the story:
 ```
 * Load
 	! load
+	> Start
 * Save
 	! save
 ```
-
-Output:
->As we can see:
->Things are happening here!
 
 Customization
 -------------
@@ -156,13 +153,15 @@ You can enable autosave by setting
 ```
 TinyStory.autosave = true;
 ```
-in the index.html (value in ms). It will save whenever a new branch is loaded.
+in the index.html. It will save whenever a new branch is loaded.
 
 ### Autoload
 You can enable autoload by setting
 ```
 TinyStory.autoload = true;
 ```
+
+Autoload will load the last save upon starting the game.
 
 ### Auto-Return
 Auto-return is the automatic loading of the last node when no further actions or links are present within a node. You can disable this by setting
