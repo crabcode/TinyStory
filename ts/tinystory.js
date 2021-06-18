@@ -1,6 +1,6 @@
 window.TinyStory =
 {
-    version: "1.1.2",
+    version: "1.1.3",
     autosave: false,
     autoload: false,
     autoReturn: true,
@@ -8,6 +8,7 @@ window.TinyStory =
     functions: {},
     fadeSpeed: 200,
     restartPause: 200,
+    options: 0,
     
     currentNode: {},
     data: [],
@@ -32,6 +33,7 @@ window.TinyStory =
     parse: function parse(data)
     {
         this.raw = data.split(/\r?\n/);
+        this.options = 0;
         
         var lastObj = [];
         
@@ -67,6 +69,7 @@ window.TinyStory =
                 case "*":
                     obj.content = line.substr(1).trim();
                     obj.type = "Option";
+                    this.options++;
                     break;
                     
                 case ":":
@@ -357,7 +360,7 @@ window.TinyStory =
             }
         }
         
-        if ($(".option").length == 0 && this.autoReturn)
+        if ($(".option").length == 0 && this.autoReturn && this.options > 0)
             this.moveUp(obj);
         
         $("#wrapper").animate({ opacity: 1 }, this.fadeSpeed);
