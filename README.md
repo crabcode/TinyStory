@@ -116,6 +116,43 @@ You can play an audiofile by adding:
 
 The file should be provided in both OGG and MP3 format. You must link to the OGG file though. It will loop automatically.
 
+### Background
+To set a background image, you can simply add:
+```
+# bg path/to/file.png [options]
+```
+
+You can also set a few basic options for background size, repeat, and position. These include:
+```
+[cover|contain] [no-repeat|repeat|repeat-x|repeat-y|space|round] [center|top|bottom|left|right]
+```
+
+These can be combined in any order. For example:
+```
+# bg path/to/file.png center cover no-repeat
+```
+
+### CSS
+For more involved styling, costumizing the style.css file is of course the best approach. But if you want to make a few small changes and keep them all contained in your story file, you can set CSS properties by adding:
+```
+# css [selector] [property] [value]
+```
+
+By default, the following selectors are available:
+* html
+* body
+* .text
+* .option
+* #wrapper
+* #title
+* #credit
+* #error
+
+For example:
+```
+# css #title margin-top 50px
+```
+
 ### Filename
 If you would like to change the name of the story file, tell TinyStory what it is in the index.html by setting
 ```

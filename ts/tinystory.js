@@ -1,5 +1,6 @@
 window.TinyStory =
 {
+    version: "1.1.2",
     autosave: false,
     autoload: false,
     autoReturn: true,
@@ -130,6 +131,43 @@ window.TinyStory =
                             createjs.Sound.alternateExtensions = [ "mp3" ];
                             createjs.Sound.on("fileload", loadHandler, this);
                             createjs.Sound.registerSound(value, "bgm");
+                            break;
+                        
+                        case "bg":
+                            var vals = value.split(" ");
+                            $("body").css("background-image", "url('" + vals[0] + "')");
+                            
+                            for (var v = 1; v < vals.length; v++)
+                            {
+                                switch (vals[v]) {
+                                    case "cover":
+                                    case "contain":
+                                        $("body").css("background-size", vals[v]);
+                                        break;
+
+                                    case "no-repeat":
+                                    case "repeat":
+                                    case "repeat-x":
+                                    case "repeat-y":
+                                    case "space":
+                                    case "round":
+                                        $("body").css("background-repeat", vals[v]);
+                                        break;
+                                        
+                                    case "center":
+                                    case "bottom":
+                                    case "top":
+                                    case "left":
+                                    case "right":
+                                        $("body").css("background-position", vals[v]);
+                                        break;
+                                }
+                            }
+                            break;
+                        
+                        case "css":
+                            var vals = value.split(" ");
+                            $(vals.shift()).css(vals.shift(), vals.join(vals, " "));
                             break;
                     }
                     
