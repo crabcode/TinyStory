@@ -121,9 +121,9 @@ window.TinyStory =
                         
                         case "font":
                             $("head").append($(document.createElement("link"))
-                                                .attr("href", "https://fonts.googleapis.com/css?family=" + value.replace(" ", "+"))
+                                                .attr("href", "https://fonts.googleapis.com/css2?family=" + value.replace(" ", "+"))
                                                 .attr("rel", "stylesheet"));
-                            $("html").css("font-family", "'" + value + "', sans-serif")
+                            $("body").css("font-family", "'" + value + "', sans-serif")
                             break;
                         
                         case "audio":
