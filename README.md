@@ -1,6 +1,8 @@
 # TinyStory
 
-TinyStory is small indentation-based Choose Your Own Adventure engine I wrote because why not.
+1.1.3
+
+TinyStory is small indentation-based Pick Thine Individual Escapades engine I wrote because why not.
 
 Syntax
 ------
@@ -219,6 +221,7 @@ TinyStory.restart();
 
 Example
 -------
+
 Finally, here's a quick example to make all of that up there a little clearer:
 ```
 # title Example
@@ -246,3 +249,86 @@ What would you like to do?
 ```
 
 Check out the `sample.txt` for a more complete example.
+
+Tips and Tricks
+---------------
+
+### Modular Scripting
+
+Whether you have nodes that you want multiple branches to pass through, or simply want to divide up your code to make it more manageable, your first instinct might be to break it down into several labeled blocks:
+
+```
+[block1]
+    // Nested choices eventually linking to block2 and block3
+
+[block2]
+    // Nested choices eventually linking to block3
+
+[block3]
+    // Ending
+```
+
+However, TinyStory executes all same-level instructions it can reach, it doesn't "enter" the label to stop execution of the rest. They are merely jumping markers and otherwise work no different than three consecutive lines of text, meaning all three blocks will be executed at once. To prevent that, you can simply set a condition that will stop execution on the first pass:
+
+```
+[block1]
+    // Nested choices eventually linking to block2 and block3
+
+: started true
+    [block2]
+        // Nested choices eventually linking to block3
+
+    [block3]
+        // Ending
+```
+
+Now TinyStory checks for a variable named ```started```, which we haven't set, skipping the nested blocks until ```block1``` links there. Since jumps and links go directly to the labels and don't check prior conditions, we won't have to ever set that variable either. We simply create a condition that is always false, allowing us to jump between labels as and when we need to.
+
+### Execution Order
+
+Let's say we want to create a simple choice loop:
+
+```
+[choice]
+    * Wait
+        You wait and wait, but nothing happens.
+        < choice
+    * Leave
+        > End
+```
+
+In this example, the player has the option to wait for as often as they like, before eventually choosing to leave. To spice this up though, we can add some conditions that track whether they have waited before:
+
+```
+[choice]
+    * Wait
+        : waited // with no value given, the condition checks whether waited is undefined
+            You wait and wait, but nothing happens.
+            = waited true
+            < choice
+        : waited true
+            You've been waiting for a while, but still nothing.
+            < choice
+    * Leave
+        > End
+```
+
+On first glance, this seems like a simple enough solution: check whether the variable ```waited``` has been set before, displaying the first message if it hasn't and the second if it has. However, just as with labels, TinyStory doesn't consider conditions blocks that it will enter and stop execution of the next. All same-level instructions under the block ```* Wait``` will be executed sequentially, because of which ```waited``` will be set to ```true``` before the second condition is tested, executing them both.
+
+To prevent this, the order of execution is important to consider:
+
+```
+[choice]
+    * Wait
+        : waited true
+            You've been waiting for a while, but still nothing.
+            < choice
+        : waited // with no value given, the condition checks whether waited is undefined
+            You wait and wait, but nothing happens.
+            = waited true
+            < choice
+    * Leave
+        > End
+```
+
+Now the first conditional will be skipped before the variable is set in the second, allowing different messages to be displayed on first and consecutive visits.
