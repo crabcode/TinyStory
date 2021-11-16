@@ -1,6 +1,6 @@
 window.TinyStory =
 {
-    version: "1.1.3",
+    version: "1.1.4",
     autosave: false,
     autoload: false,
     autoReturn: true,
@@ -15,6 +15,58 @@ window.TinyStory =
     index: [],
     vars: {},
     space: undefined,
+
+    varReg: /[A-Za-z_][A-Za-z0-9_]*/,
+    varRep: /%([A-Za-z_][A-Za-z0-9_]*)%/,
+    lexer: new Lexer(),
+    operators: {
+        "+": function(a, b) { return a + b },
+        "-": function(a, b) { return a - b },
+        "*": function(a, b) { return a * b },
+        "/": function(a, b) { return a / b },
+    },
+
+    init: function init()
+    {
+        // Lexer
+        this.lexer.addRule(/\s+/, function() {});
+        this.lexer.addRule(/^[-][0-9]+/, function(lexme) {
+            return lexme; // negative numbers
+        });
+        this.lexer.addRule(/[0-9]+/, function(lexme) {
+            return lexme; // positive numbers
+        });
+        this.lexer.addRule(this.varReg, function(lexme) {
+            return lexme; // symbols
+        });
+        this.lexer.addRule(/[\(\+\-\*\/\)]/, function(lexme) {
+            return lexme; // operators etc
+        });
+
+        // Parser
+        var factor = {
+            precedence: 2,
+            associativity: "left",
+        };
+        var term = {
+            precedence: 1,
+            associativity: "left",
+        };
+        this.ExpParser = new Parser({
+            "+": term,
+            "-": term,
+            "*": factor,
+            "/": factor,
+        });
+    },
+
+    ParseExp: function ParseExp(input)
+    {
+        this.lexer.setInput(input);
+        var tokens = [], token;
+        while (token = this.lexer.lex()) tokens.push(token);
+        return this.ExpParser.parse(tokens);
+    },
     
     load: function load()
     {
@@ -75,6 +127,28 @@ window.TinyStory =
                 case ":":
                     obj.content = line.substr(1).trim();
                     obj.type = "Condition";
+                    obj.op = "=";
+
+                    if (obj.content.startsWith("<=") ||
+                        obj.content.startsWith(">="))
+                    {
+                        obj.op = obj.content.substr(0, 2);
+                        obj.content = obj.content.substr(2).trim();
+                    }
+                    else if (obj.content.startsWith("==") ||
+                             obj.content.startsWith("!="))
+                    {
+                        obj.op = obj.content[0];
+                        obj.content = obj.content.substr(2).trim();
+                    }
+                    else if (obj.content.startsWith("<") ||
+                             obj.content.startsWith(">") ||
+                             obj.content.startsWith("=") ||
+                             obj.content.startsWith("!"))
+                    {
+                        obj.op = obj.content[0];
+                        obj.content = obj.content.substr(1).trim();
+                    }
                     break;
                     
                 case "=":
@@ -228,7 +302,7 @@ window.TinyStory =
                 case "Option":
                     $("#wrapper").append($(document.createElement("div"))
                                         .addClass("option")
-                                        .text(obj.content)
+                                        .text(this.processText(obj.content))
                                         .click(this.handleClick.bind(this, obj, false, false)));
                     break;
                     
@@ -238,7 +312,7 @@ window.TinyStory =
                     
                     $("#wrapper").append($(document.createElement("div"))
                                         .addClass("text")
-                                        .text(obj.content));
+                                        .text(this.processText(obj.content)));
                     break;
                     
                 case "Condition":
@@ -258,6 +332,15 @@ window.TinyStory =
                                 value = null;
                             case "NaN":
                                 value = NaN;
+                            case "true":
+                                value = true;
+                                break;
+                            case "false":
+                                value = false;
+                                break;
+                            default:
+                                value = this.processExp(value);
+                                break;
                         }
                     }
                     else
@@ -266,7 +349,12 @@ window.TinyStory =
                         value = undefined;
                     }
                     
-                    if (this.vars[variable] == value)
+                    if ((obj.op == "=" && this.vars[variable] == value) ||
+                        (obj.op == "<" && this.vars[variable] < value) ||
+                        (obj.op == ">" && this.vars[variable] > value) ||
+                        (obj.op == "!" && this.vars[variable] != value) ||
+                        (obj.op == "<=" && this.vars[variable] <= value) ||
+                        (obj.op == ">=" && this.vars[variable] >= value))
                     {
                         if (obj.children.length > 0)
                             this.delayedLoadNode(obj.children, true, false);
@@ -290,8 +378,19 @@ window.TinyStory =
                                 break;
                             case "null":
                                 value = null;
+                                break;
                             case "NaN":
                                 value = NaN;
+                                break;
+                            case "true":
+                                value = true;
+                                break;
+                            case "false":
+                                value = false;
+                                break;
+                            default:
+                                value = this.processExp(value);
+                                break;
                         }
                     }
                     else
@@ -473,5 +572,42 @@ window.TinyStory =
         }
         
         return null;
+    },
+
+    processText: function processText(text)
+    {
+        return text.replace(this.varRep, function(a, b) {
+            let v = this.vars[b];
+            if (v == undefined) v = 0;
+            return v;
+        }.bind(this));
+    },
+
+    processExp: function processText(input)
+    {
+        var stack = [];
+
+        this.ParseExp(input).forEach(function(c)
+        {
+            switch (c)
+            {
+                case "+":
+                case "-":
+                case "*":
+                case "/":
+                    var b = stack.pop();
+                    var a = stack.pop();
+                    stack.push(this.operators[c](a, b));
+                    break;
+                default:
+                    if (c.match(/^[-]?\d+$/))
+                        stack.push(parseFloat(c));
+                    else
+                        stack.push(this.vars[c]);
+                    break;
+            }
+        }.bind(this));
+
+        return stack.pop();
     }
 }
