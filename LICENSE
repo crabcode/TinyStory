@@ -1,6 +1,10 @@
 MIT License
 
+TinyStory
 Copyright (c) 2017 Crabman
+
+lexer.js, shunt.js
+Copyright (c) 2013 Aadit M Shah
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
