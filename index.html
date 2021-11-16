@@ -12,12 +12,15 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script type="text/javascript">window.jQuery || document.write("<script type=\"text\/javascript\" src=\"ts\/jquery.min.js\"><\/script>");</script>
 		
+		<script defer src="ts/lexer.js" type="text/javascript"></script>
+		<script defer src="ts/shunt.js" type="text/javascript"></script>
 		<script defer src="ts/tinystory.js" type="text/javascript"></script>
 		
 		<script type="text/javascript">
 			window.onload = function()
 			{
 				TinyStory.filename = "sample.txt";
+				TinyStory.init();
 				TinyStory.load();
 			}
 		</script>

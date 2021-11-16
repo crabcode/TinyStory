@@ -1,6 +1,6 @@
 # TinyStory
 
-1.1.3
+1.1.4
 
 TinyStory is small indentation-based Pick Thine Individual Escapades engine I wrote because why not.
 
@@ -17,23 +17,48 @@ The most important thing to note is that the nesting of text and options is achi
 
 Note: If there are no subsequent options or jumps, the previous options will be displayed again.
 
-### Setting Variables
+### Variables
+Variables may contain letters, numbers, and underscores, though they may not start with a number. They can be assigned like this:
 ```
-= variable value
+= variable value/expression
+```
+
+Variables can contain strings, numbers, and special keywords like `true, false, undefined, null, NaN`. Math operations are supported as well, for example:
+```
+= var1 ((var2 * 10) / var3) + 1
+```
+
+To display the content of a variable, surround the variable name with percentage symbols:
+```
+Your account contains %account_balance% dollars.
 ```
 
 ### Conditions
-Check if a variable has a certain value. Not putting a value will default to `undefined`. Conditions can be nested.
+Compare a certain variable to a value or expression. Not putting a value/expression will default to `undefined`. Conditions can be nested.
 
 ```
 : variable true
     * I appear only if the variable is true
 : variable
     * I appear if the variable hasn't been set or is undefined
-: v1 true
-	: v2 true
+: var1 true
+	: var2 true
 		I appear if both v1 and v2 are true.
 ```
+
+By default, TinyStory assumes that you want to check for equality, but other comparisons, like `<, >, <=, >=, !`, can be specified like so:
+
+```
+:<= var1 (var2 + var3)
+    * Lesser or equal
+:> var1 (var2 + var3)
+    * Greater
+
+:! var1 undefined
+    * I appear as long as var1 isn't undefined
+```
+
+Note: Unset variables default to `undefined`, not `0`.
 
 ### Labels
 Mark parts to jump or link to. Following blocks are nested through indentation as well.
@@ -80,6 +105,8 @@ You can define and call functions by first adding functions to the TinyStory.fun
 	{
 		TinyStory.functions.load = function() { TinyStory.loadGame(); }
 		TinyStory.functions.save = function() { TinyStory.saveGame(); }
+
+		TinyStory.init();
 		TinyStory.load();
 	}
 </script>
@@ -161,17 +188,6 @@ If you would like to change the name of the story file, tell TinyStory what it i
 TinyStory.filename = "yourname.txt";
 ```
 prior to load().
-
-### Functions
-You can register functions to call from the story (see Syntax > Functions) by adding them to the TinyStory.functions object in the index.html:
-```
-TinyStory.functions.yourFunctionName = function() {
-	// Your function
-};
-TinyStory.functions.anotherFunctionName = function() {
-	// Another function
-};
-```
 
 ### Fade Speed
 Change the fade speed by setting
@@ -282,7 +298,7 @@ However, TinyStory executes all same-level instructions it can reach, it doesn't
         // Ending
 ```
 
-Now TinyStory checks for a variable named ```started```, which we haven't set, skipping the nested blocks until ```block1``` links there. Since jumps and links go directly to the labels and don't check prior conditions, we won't have to ever set that variable either. We simply create a condition that is always false, allowing us to jump between labels as and when we need to.
+Now TinyStory checks for a variable named ```started```, which we haven't set, skipping the nested blocks until `block1` links there. Since jumps and links go directly to the labels and don't check prior conditions, we won't have to ever set that variable either. We simply create a condition that is always false, allowing us to jump between labels as and when we need to.
 
 ### Execution Order
 
